@@ -21,9 +21,11 @@ set -eu
 true ${SOC:=rk3576}
 true ${DISABLE_MKIMG:=0}
 
-UBOOT_REPO=https://github.com/friendlyarm/uboot-rockchip
-UBOOT_BRANCH=nanopi6-v2017.09
-BOARD=nanopi6
+# UBOOT_REPO=https://github.com/friendlyarm/uboot-rockchip
+# UBOOT_BRANCH=nanopi6-v2017.09
+UBOOT_REPO=http://192.168.1.65:3000/tzs/uboot-friendlyelec-for-rocknix
+UBOOT_BRANCH=nanopi6-v2017.09_dev-m5
+BOARD=nanopi_m5
 
 TOPPATH=$PWD
 OUT=$TOPPATH/out
@@ -125,7 +127,7 @@ if [ ! -d ${UBOOT_SRC} ]; then
 fi
 if [ ! -d ${UBOOT_SRC}/../rkbin ]; then
     (cd ${UBOOT_SRC}/../ && {
-        git clone https://github.com/friendlyarm/rkbin -b ${BOARD}
+        git clone https://github.com/friendlyarm/rkbin -b nanopi5
     })
 fi
 

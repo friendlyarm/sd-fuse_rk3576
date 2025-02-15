@@ -27,13 +27,15 @@ true ${KERNEL_LOGO:=}
 true ${MK_HEADERS_DEB:=0}
 true ${SKIP_DISTCLEAN:=0}
 true ${BUILD_THIRD_PARTY_DRIVER:=1}
-true ${KCFG:=nanopi6_linux_defconfig}
+true ${KCFG:=nanopi5_linux_defconfig}
 true ${TARGET_OS:=$(echo ${1,,}|sed 's/\///g')}
 
-KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
-KERNEL_BRANCH=nanopi6-v6.1.y
+# KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
+# KERNEL_BRANCH=nanopi6-v6.1.y
+KERNEL_REPO=http://192.168.1.65:3000/tzs/linux-mirror-1.5
+KERNEL_BRANCH=nanopi6-v6.1.y_dev-m5
 ARCH=arm64
-KALL=nanopi6-images
+KALL=nanopi5-images
 BACKPORT=
 case "$(uname -mpi)" in
 x86_64*)
