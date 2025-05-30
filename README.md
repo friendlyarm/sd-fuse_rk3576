@@ -39,6 +39,7 @@ For other kernel versions, please switch to the related git branch.
 * eflasher
 * openmediavault-arm64
 * alpine-linux-arm64
+* arch-linux-arm64
 
   
 To build an SD card image for ubuntu-jammy-desktop, for example like this:
