@@ -30,10 +30,8 @@ true ${BUILD_THIRD_PARTY_DRIVER:=1}
 true ${KCFG:=nanopi5_linux_defconfig}
 true ${TARGET_OS:=$(echo ${1,,}|sed 's/\///g')}
 
-# KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
-# KERNEL_BRANCH=nanopi6-v6.1.y
-KERNEL_REPO=http://192.168.1.65:3000/tzs/linux-mirror-1.5
-KERNEL_BRANCH=nanopi6-v6.1.y_dev-m5
+KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
+KERNEL_BRANCH=nanopi6-v6.1.y
 ARCH=arm64
 KALL=nanopi5-images
 BACKPORT=

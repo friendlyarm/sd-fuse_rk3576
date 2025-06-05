@@ -21,10 +21,8 @@ set -eu
 true ${SOC:=rk3576}
 true ${DISABLE_MKIMG:=0}
 
-# UBOOT_REPO=https://github.com/friendlyarm/uboot-rockchip
-# UBOOT_BRANCH=nanopi6-v2017.09
-UBOOT_REPO=http://192.168.1.65:3000/tzs/uboot-friendlyelec-for-rocknix
-UBOOT_BRANCH=nanopi6-v2017.09_dev-m5
+UBOOT_REPO=https://github.com/friendlyarm/uboot-rockchip
+UBOOT_BRANCH=nanopi5-v2017.09
 BOARD=nanopi_m5
 
 TOPPATH=$PWD
