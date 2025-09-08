@@ -23,28 +23,30 @@ For other kernel versions, please switch to the related git branch.
 ## Target board OS Supported
 *Notes: The OS name is the same as the directory name, it is written in the script so it cannot be renamed.*
 
+* buildroot
+* debian-bookworm-core-arm64
 * debian-bullseye-desktop-arm64
 * debian-bullseye-minimal-arm64
-* debian-bookworm-core-arm64
-* ubuntu-jammy-desktop-arm64
-* ubuntu-jammy-minimal-arm64
-* ubuntu-jammy-x11-desktop-arm64
-* ubuntu-focal-desktop-arm64
-* friendlywrt24
-* friendlywrt24-docker
-* friendlywrt23
-* friendlywrt23-docker
+* eflasher
+* friendlycore-focal-arm64
 * friendlywrt21
 * friendlywrt21-docker
-* eflasher
+* friendlywrt23
+* friendlywrt23-docker
+* friendlywrt24
+* friendlywrt24-docker
 * openmediavault-arm64
 * alpine-linux-arm64
-* arch-linux-arm64
+* proxmox-arm64
+* ubuntu-focal-desktop-arm64
+* ubuntu-noble-core-arm64
+* ubuntu-noble-desktop-arm64
+* ubuntu-noble-minimal-arm64
 
   
-To build an SD card image for ubuntu-jammy-desktop, for example like this:
+To build an SD card image for ubuntu-noble-desktop-arm64, for example like this:
 ```
-./mk-sd-image.sh ubuntu-jammy-desktop-arm64
+./mk-sd-image.sh ubuntu-noble-desktop-arm64-arm64
 ```
   
 ## Where to download files
@@ -67,56 +69,56 @@ If the files are not prepared in advance, the script will automatically download
 
 ## Usage
 ### Build your own SD card image
-*Note: Here we use ubuntu-jammy-desktop system as an example*  
+*Note: Here we use ubuntu-noble-desktop-arm64 system as an example*  
 Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher), due to the bandwidth of the http server, we recommend downloading the file from the [NetDrive](https://download.friendlyelec.com/rk3576):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-jammy-desktop-arm64-images.tgz
-tar xvzf ubuntu-jammy-desktop-arm64-images.tgz
+wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-noble-desktop-arm64-arm64-images.tgz
+tar xvzf ubuntu-noble-desktop-arm64-arm64-images.tgz
 ```
-After decompressing, you will get a directory named ubuntu-jammy-desktop-arm64, you can change the files in the directory as needed, for example, replace rootfs.img with your own modified version, or your own compiled kernel and uboot, finally, flash the image to the SD card by entering the following command (The below steps assume your SD card is device /dev/sdX):
+After decompressing, you will get a directory named ubuntu-noble-desktop-arm64-arm64, you can change the files in the directory as needed, for example, replace rootfs.img with your own modified version, or your own compiled kernel and uboot, finally, flash the image to the SD card by entering the following command (The below steps assume your SD card is device /dev/sdX):
 ```
-sudo ./fusing.sh /dev/sdX ubuntu-jammy-desktop-arm64
+sudo ./fusing.sh /dev/sdX ubuntu-noble-desktop-arm64-arm64
 ```
 Or, package it as an SD card image file:
 ```
-./mk-sd-image.sh ubuntu-jammy-desktop-arm64
+./mk-sd-image.sh ubuntu-noble-desktop-arm64-arm64
 ```
-The following flashable image file will be generated, it is now ready to be used to boot the device into ubuntu-jammy-desktop:  
+The following flashable image file will be generated, it is now ready to be used to boot the device into ubuntu-noble-desktop-arm64:  
 ```
-out/rk3576-sd-ubuntu-jammy-desktop-6.1-arm64-YYYYMMDD.img
+out/rk3576-sd-ubuntu-noble-desktop-arm64-6.1-arm64-YYYYMMDD.img
 ```
 
 #### Create an SD card image that does not use OverlayFS
 The following command will create an SD card image with OverlayFS disabled:
 ```
-cp prebuilt/parameter-plain.txt ubuntu-jammy-desktop-arm64/parameter.txt
-cp prebuilt/dtbo-plain.img ubuntu-jammy-desktop-arm64/dtbo.img
-./mk-sd-image.sh ubuntu-jammy-desktop-arm64
+cp prebuilt/parameter-plain.txt ubuntu-noble-desktop-arm64-arm64/parameter.txt
+cp prebuilt/dtbo-plain.img ubuntu-noble-desktop-arm64-arm64/dtbo.img
+./mk-sd-image.sh ubuntu-noble-desktop-arm64-arm64
 ```
 The benefits of disabling OverlayFS are as follows:  
 * Docker can choose a file system type with better performance
 * Enabling Swap becomes more convenient
 
 ### Build your own SD-to-eMMC Image
-*Note: Here we use ubuntu-jammy-desktop system as an example*  
-Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher), here you need to download the ubuntu-jammy-desktop and eflasher [pre-built images](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher):
+*Note: Here we use ubuntu-noble-desktop-arm64 system as an example*  
+Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher), here you need to download the ubuntu-noble-desktop-arm64 and eflasher [pre-built images](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-jammy-desktop-arm64-images.tgz
-tar xvzf ubuntu-jammy-desktop-arm64-images.tgz
+wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-noble-desktop-arm64-arm64-images.tgz
+tar xvzf ubuntu-noble-desktop-arm64-arm64-images.tgz
 wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/emmc-flasher-images.tgz
 tar xvzf emmc-flasher-images.tgz
 ```
 Then use the following command to build the SD-to-eMMC image, the autostart=yes parameter means it will automatically enter the flash process when booting:
 ```
-./mk-emmc-image.sh ubuntu-jammy-desktop-arm64 autostart=yes
+./mk-emmc-image.sh ubuntu-noble-desktop-arm64-arm64 autostart=yes
 ```
-The following flashable image file will be generated, ready to be used to boot the device into eflasher system and then flash ubuntu-jammy-desktop system to eMMC: 
+The following flashable image file will be generated, ready to be used to boot the device into eflasher system and then flash ubuntu-noble-desktop-arm64 system to eMMC: 
 ```
-out/rk3576-eflasher-ubuntu-jammy-desktop-6.1-arm64-YYYYMMDD.img
+out/rk3576-eflasher-ubuntu-noble-desktop-arm64-6.1-arm64-YYYYMMDD.img
 ```
 ### Backup rootfs and create custom SD image (to burn your application into other boards)
 #### Backup rootfs
@@ -127,44 +129,44 @@ su root
 cd /
 tar --warning=no-file-changed -cvpzf /rootfs.tar.gz \
     --exclude=/rootfs.tar.gz --exclude=/var/lib/docker/runtimes \
-    --exclude=/etc/firstuser --exclude=/etc/friendlyelec-release \
+    --exclude=/etc/firstuse --exclude=/etc/friendlyelec-release \
     --exclude=/usr/local/first_boot_flag --one-file-system /
 ```
 #### Making a bootable SD card from a root filesystem
-*Note: Here we use ubuntu-jammy-desktop system as an example*  
+*Note: Here we use ubuntu-noble-desktop-arm64 system as an example*  
 Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-jammy-desktop-arm64-images.tgz
-tar xvzf ubuntu-jammy-desktop-arm64-images.tgz
+wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-noble-desktop-arm64-arm64-images.tgz
+tar xvzf ubuntu-noble-desktop-arm64-arm64-images.tgz
 ```
 Extract the rootfs.tar.gz exported in the previous section, the tar command requires root privileges, so you need put sudo in front of the command:
 ```
-mkdir ubuntu-jammy-desktop-arm64/rootfs
-./tools/extract-rootfs-tar.sh rootfs.tar.gz ubuntu-jammy-desktop-arm64/rootfs
+mkdir ubuntu-noble-desktop-arm64-arm64/rootfs
+./tools/extract-rootfs-tar.sh rootfs.tar.gz ubuntu-noble-desktop-arm64-arm64/rootfs
 ```
 or download the filesystem archive from the following URL and extract it:
 ```
-wget http://112.124.9.243/dvdfiles/rk3576/rootfs/rootfs-ubuntu-jammy-desktop-arm64.tgz
-./tools/extract-rootfs-tar.sh rootfs-ubuntu-jammy-desktop-arm64.tgz
+wget http://112.124.9.243/dvdfiles/rk3576/rootfs/rootfs-ubuntu-noble-desktop-arm64-arm64.tgz
+./tools/extract-rootfs-tar.sh rootfs-ubuntu-noble-desktop-arm64-arm64.tgz
 ```
 Make rootfs to img:
 ```
-sudo ./build-rootfs-img.sh ubuntu-jammy-desktop-arm64/rootfs ubuntu-jammy-desktop-arm64
+sudo ./build-rootfs-img.sh ubuntu-noble-desktop-arm64-arm64/rootfs ubuntu-noble-desktop-arm64-arm64
 ```
 Use the new rootfs.img to build SD card image:
 ```
-./mk-sd-image.sh ubuntu-jammy-desktop-arm64
+./mk-sd-image.sh ubuntu-noble-desktop-arm64-arm64
 ```
 Or build SD-to-eMMC image:
 ```
-./mk-emmc-image.sh ubuntu-jammy-desktop-arm64 autostart=yes
+./mk-emmc-image.sh ubuntu-noble-desktop-arm64-arm64 autostart=yes
 ```
 If the image path is too big to pack, you can use the RAW_SIZE_MB environment variable to set a new image size. for example, you can set it to 16GB:
 ```
-RAW_SIZE_MB=16000 ./mk-sd-image.sh ubuntu-jammy-desktop-arm64
-RAW_SIZE_MB=16000 ./mk-emmc-image.sh ubuntu-jammy-desktop-arm64
+RAW_SIZE_MB=16000 ./mk-sd-image.sh ubuntu-noble-desktop-arm64-arm64
+RAW_SIZE_MB=16000 ./mk-emmc-image.sh ubuntu-noble-desktop-arm64-arm64
 ```
 
 #### Using BTRFS as your root filesystem
@@ -178,23 +180,23 @@ The following command will create an SD card image with BTRFS root filesystem:
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-jammy-desktop-arm64-images.tgz
-tar xvzf ubuntu-jammy-desktop-arm64-images.tgz
-wget http://112.124.9.243/dvdfiles/rk3576/rootfs/rootfs-ubuntu-jammy-desktop-arm64.tgz
-./tools/extract-rootfs-tar.sh rootfs-ubuntu-jammy-desktop-arm64.tgz
-sudo -E FS_TYPE=btrfs ./build-rootfs-img.sh ubuntu-jammy-desktop-arm64/rootfs \
-    ubuntu-jammy-desktop-arm64
-./mk-sd-image.sh ubuntu-jammy-desktop-arm64
+wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-noble-desktop-arm64-arm64-images.tgz
+tar xvzf ubuntu-noble-desktop-arm64-arm64-images.tgz
+wget http://112.124.9.243/dvdfiles/rk3576/rootfs/rootfs-ubuntu-noble-desktop-arm64-arm64.tgz
+./tools/extract-rootfs-tar.sh rootfs-ubuntu-noble-desktop-arm64-arm64.tgz
+sudo -E FS_TYPE=btrfs ./build-rootfs-img.sh ubuntu-noble-desktop-arm64-arm64/rootfs \
+    ubuntu-noble-desktop-arm64-arm64
+./mk-sd-image.sh ubuntu-noble-desktop-arm64-arm64
 ```
 
 ### Compiling the Kernel
-*Note: Here we use ubuntu-jammy-desktop system as an example*  
+*Note: Here we use ubuntu-noble-desktop-arm64 system as an example*  
 Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-jammy-desktop-arm64-images.tgz
-tar xvzf ubuntu-jammy-desktop-arm64-images.tgz
+wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-noble-desktop-arm64-arm64-images.tgz
+tar xvzf ubuntu-noble-desktop-arm64-arm64-images.tgz
 ```
 Download the kernel source code from github:
 ```
@@ -204,7 +206,7 @@ Customize the kernel configuration:
 ```
 cd kernel
 touch .scmversion
-make ARCH=arm64 nanopi6_linux_defconfig
+make ARCH=arm64 nanopi6_linux_defconfig kvm.config
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- savedefconfig
 cp defconfig ./arch/arm64/configs/my_defconfig                  # Save the configuration as my_defconfig
@@ -213,13 +215,13 @@ cd -
 ```
 To compile the kernel, use the environment variables KERNEL_SRC and KCFG to set the source code folder and the defconfig file:
 ```
-KERNEL_SRC=kernel KCFG=my_defconfig ./build-kernel.sh ubuntu-jammy-desktop-arm64
+KERNEL_SRC=kernel KCFG=my_defconfig ./build-kernel.sh ubuntu-noble-desktop-arm64-arm64
 ```
 
 #### Compiling the kernel headers only
 Set the environment variable MK_HEADERS_DEB to 1, which will compile the kernel headers:
 ```
-MK_HEADERS_DEB=1 ./build-kernel.sh ubuntu-jammy-desktop-arm64
+MK_HEADERS_DEB=1 ./build-kernel.sh ubuntu-noble-desktop-arm64-arm64
 ```
 #### Environment Variables
 * KERNEL_SRC is used to specify the local kernel source code dir.
@@ -228,18 +230,18 @@ MK_HEADERS_DEB=1 ./build-kernel.sh ubuntu-jammy-desktop-arm64
 * Set SKIP_DISTCLEAN to 1 to skip running distclean before compiling
 
 ### Compiling the u-boot
-*Note: Here we use ubuntu-jammy-desktop system as an example* 
+*Note: Here we use ubuntu-noble-desktop-arm64 system as an example* 
 Clone this repository locally, then download and uncompress the [pre-built images](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-jammy-desktop-arm64-images.tgz
-tar xvzf ubuntu-jammy-desktop-arm64-images.tgz
+wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/ubuntu-noble-desktop-arm64-arm64-images.tgz
+tar xvzf ubuntu-noble-desktop-arm64-arm64-images.tgz
 ```
 Download the u-boot source code from github that matches the OS version, the environment variable UBOOT_SRC is used to specify the local source code directory:
 ```
 git clone https://github.com/friendlyarm/uboot-rockchip -b nanopi6-v2017.09 --depth 1 uboot
-UBOOT_SRC=uboot ./build-uboot.sh ubuntu-jammy-desktop-arm64
+UBOOT_SRC=uboot ./build-uboot.sh ubuntu-noble-desktop-arm64-arm64
 ```
 ### Common Issues and Solutions
 * Unable to boot after creating rootfs (Solution: The file permissions in the file system might be corrupted. Make sure to use the tools/extract-rootfs-tar.sh script to extract rootfs, and use the -cpzf options with the tar command for packaging.)
