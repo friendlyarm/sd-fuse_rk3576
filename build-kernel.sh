@@ -27,8 +27,18 @@ true ${KERNEL_LOGO:=}
 true ${MK_HEADERS_DEB:=0}
 true ${SKIP_DISTCLEAN:=0}
 true ${BUILD_THIRD_PARTY_DRIVER:=1}
-true ${KCFG:=nanopi5_linux_defconfig}
+true ${KCFG:=nanopi5_linux_defconfig kvm.config}
 true ${TARGET_OS:=$(echo ${1,,}|sed 's/\///g')}
+
+case ${TARGET_OS} in
+ubuntu-noble-desktop* | ubuntu-noble-minimal*)
+    if ! echo "$KCFG" | grep -qw "panfrost.config"; then
+        KCFG="$KCFG panfrost.config"
+    fi
+    ;;
+*)
+    ;;
+esac
 
 KERNEL_REPO=https://github.com/friendlyarm/kernel-rockchip
 KERNEL_BRANCH=nanopi6-v6.1.y
