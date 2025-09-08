@@ -207,11 +207,11 @@ Customize the kernel configuration:
 cd kernel
 touch .scmversion
 
-make ARCH=arm64 nanopi6_linux_defconfig kvm.config
+make ARCH=arm64 nanopi5_linux_defconfig kvm.config
 # Optionally, load configuration for FriendlyWrt
-# make ARCH=arm64 nanopi6_linux_defconfig kvm.config friendlywrt.config
+# make ARCH=arm64 nanopi5_linux_defconfig kvm.config friendlywrt.config
 # Optionally, load configuration for Ubuntu 24.04 Wayland Desktop
-# make ARCH=arm64 nanopi6_linux_defconfig kvm.config panfrost.config
+# make ARCH=arm64 nanopi5_linux_defconfig kvm.config panfrost.config
 
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- savedefconfig

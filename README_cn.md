@@ -205,11 +205,11 @@ git clone https://github.com/friendlyarm/kernel-rockchip -b nanopi6-v6.1.y --dep
 cd kernel
 touch .scmversion
 
-make ARCH=arm64 nanopi6_linux_defconfig kvm.config
+make ARCH=arm64 nanopi5_linux_defconfig kvm.config
 # 可选, 加载用于FriendlyWrt系统的配置
-# make ARCH=arm64 nanopi6_linux_defconfig kvm.config friendlywrt.config
+# make ARCH=arm64 nanopi5_linux_defconfig kvm.config friendlywrt.config
 # 可选, 加载用于Ubuntu 24.04 Wayland Desktop系统的配置
-# make ARCH=arm64 nanopi6_linux_defconfig kvm.config panfrost.config
+# make ARCH=arm64 nanopi5_linux_defconfig kvm.config panfrost.config
 
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- menuconfig     # 根据需要改动配置
 make ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- savedefconfig
