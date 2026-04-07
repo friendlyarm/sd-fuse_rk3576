@@ -28,10 +28,8 @@ sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的�
 * debian-bullseye-minimal-arm64
 * eflasher
 * friendlycore-focal-arm64
-* friendlywrt21
-* friendlywrt21-docker
-* friendlywrt23
-* friendlywrt23-docker
+* friendlywrt25
+* friendlywrt25-docker
 * friendlywrt24
 * friendlywrt24-docker
 * openmediavault-arm64
@@ -41,6 +39,11 @@ sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的�
 * ubuntu-noble-core-arm64
 * ubuntu-noble-desktop-arm64
 * ubuntu-noble-minimal-arm64
+* ubuntu-noble-lxqt-x11-desktop-arm64
+* debian-bookworm-lxqt-x11-desktop-arm64
+* debian-bookworm-xfce-x11-desktop-arm64
+* debian-trixie-gnome-wayland-minimal-arm64
+* debian-trixie-gnome-wayland-desktop-arm64
 
   
 这些OS名称是分区镜像文件存放的目录名, 在脚本内亦有严格定义, 所以不能改动, 例如要制作debian-bullseye-desktop-arm64的SD固件, 可使用如下命令:
