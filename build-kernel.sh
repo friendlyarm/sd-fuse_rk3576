@@ -31,7 +31,7 @@ true ${KCFG:=nanopi5_linux_defconfig kvm.config}
 true ${TARGET_OS:=$(echo ${1,,}|sed 's/\///g')}
 
 case ${TARGET_OS} in
-ubuntu-noble-desktop* | ubuntu-noble-minimal*)
+debian-trixie-gnome-wayland* | ubuntu-noble-lxqt-x11* | ubuntu-noble-desktop* | ubuntu-noble-minimal*)
     if ! echo "$KCFG" | grep -qw "panfrost.config"; then
         KCFG="$KCFG panfrost.config"
     fi
