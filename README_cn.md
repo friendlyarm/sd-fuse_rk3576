@@ -46,19 +46,19 @@ sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的�
 * debian-trixie-gnome-wayland-desktop-arm64
 
   
-这些OS名称是分区镜像文件存放的目录名, 在脚本内亦有严格定义, 所以不能改动, 例如要制作debian-bullseye-desktop-arm64的SD固件, 可使用如下命令:
+这些OS名称是分区镜像文件存放的目录名, 在脚本内亦有严格定义, 所以不能改动, 例如要制作debian-bullseye的SD固件, 可使用如下命令:
 ```
-./mk-sd-image.sh debian-bullseye-desktop-arm64-arm64
+./mk-sd-image.sh debian-bullseye-desktop-arm64
 ```
   
 ## 获得打包固件所需要的素材
 制作固件所需要的素材有:
 * 内核源代码: 在[网盘](https://download.friendlyelec.com/rk3576)的 "07_源代码" 目录中, 或者从[此github链接](https://github.com/friendlyarm/kernel-rockchip)下载, 分支为nanopi6-v6.1.y
 * uboot源代码: 在[网盘](https://download.friendlyelec.com/rk3576)的 "07_源代码" 目录中, 或者从[此github链接](https://github.com/friendlyarm/uboot-rockchip)下载, 分支为nanopi6-v2017.09
-* 分区镜像文件: 在[网盘](https://download.friendlyelec.com/rk3576)的 "03_分区镜像文件" 目录中, 或者从[此http链接](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher)下载
-* 文件系统压缩包: 在[网盘](https://download.friendlyelec.com/rk3576)的 "06_文件系统" 目录中, 或者从[此http链接](http://112.124.9.243/dvdfiles/rk3576/rootfs)下载
+* 分区镜像文件: 在[网盘](https://download.friendlyelec.com/rk3576)的 "03_分区镜像文件" 目录中, 或者从[服务器](https://downloads.friendlyelec.com/os-images/rk3576/images)下载
+* 文件系统压缩包: 在[网盘](https://download.friendlyelec.com/rk3576)的 "06_文件系统" 目录中, 或者从[服务器](https://downloads.friendlyelec.com/rootfs/rk3576)下载
   
-如果没有提前准备好文件, 脚本亦会使用wget命令从http server去下载, 不过因为http服务器带宽不足的关系, 速度可能会比较慢。
+如果没有提前准备好文件, 脚本会从服务器下载最新版本。
 
 ## 脚本功能
 * fusing.sh: 将镜像烧写至SD卡
@@ -71,55 +71,55 @@ sd-fuse 使用不同的git分支来支持不同的内核版本, 当前支持的�
 
 ## 如何使用
 ### 重新打包SD卡运行固件
-*注: 这里以debian-bullseye-desktop-arm64系统为例进行说明*  
-下载本仓库到本地, 然后下载并解压debian-bullseye-desktop-arm64系统的[分区镜像文件压缩包](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher), 由于http服务器带宽的关系, wget命令可能会比较慢, 推荐从网盘上下载同名的文件:
+*注: 这里以debian-bullseye系统为例进行说明*  
+克隆本仓库到本地, 然后下载并解压debian-bullseye系统的[分区镜像文件压缩包](https://downloads.friendlyelec.com/os-images/rk3576/images):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/debian-bullseye-desktop-arm64-arm64-images.tgz
-tar xvzf debian-bullseye-desktop-arm64-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3576/images/debian-bullseye-desktop-arm64-images.tgz
+tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
-解压后, 会得到一个名为debian-bullseye-desktop-arm64-arm64的目录, 可以根据项目需要, 对目录里的文件进行修改, 例如把rootfs.img替换成自已修改过的文件系统镜像, 或者自已编译的内核和uboot等, 准备就绪后, 输入如下命令将系统映像写入到SD卡  (其中/dev/sdX是你的SD卡设备名):
+解压后, 会得到一个名为debian-bullseye-desktop-arm64的目录, 可以根据项目需要, 对目录里的文件进行修改, 例如把rootfs.img替换成自已修改过的文件系统镜像, 或者自已编译的内核和uboot等, 准备就绪后, 输入如下命令将系统映像写入到SD卡  (其中/dev/sdX是你的SD卡设备名):
 ```
-sudo ./fusing.sh /dev/sdX debian-bullseye-desktop-arm64-arm64
+sudo ./fusing.sh /dev/sdX debian-bullseye-desktop-arm64
 ```
 或者, 打包成可用于SD卡烧写的单一镜像文件:
 ```
-./mk-sd-image.sh debian-bullseye-desktop-arm64-arm64
+./mk-sd-image.sh debian-bullseye-desktop-arm64
 ```
 命令执行成功后, 将生成以下文件, 此文件可烧写到SD卡运行:  
 ```
-out/rk3576-sd-debian-bullseye-desktop-arm64-6.1-arm64-YYYYMMDD.img
+out/rk3576-sd-debian-bullseye-desktop-6.1-arm64-YYYYMMDD.img
 ```
 
 #### 创建一个不使用OverlayFS的SD卡镜像
 产品量产需要从SD卡导出根文件系统时, 需要提前禁用OverlayFS, 下面的命令将制作一个已禁用OverlayFS的SD卡镜像:
 ```
-cp prebuilt/parameter-plain.txt debian-bullseye-desktop-arm64-arm64/parameter.txt
-cp prebuilt/dtbo-plain.img debian-bullseye-desktop-arm64-arm64/dtbo.img
-./mk-sd-image.sh debian-bullseye-desktop-arm64-arm64
+cp prebuilt/parameter-plain.txt debian-bullseye-desktop-arm64/parameter.txt
+cp prebuilt/dtbo-plain.img debian-bullseye-desktop-arm64/dtbo.img
+./mk-sd-image.sh debian-bullseye-desktop-arm64
 ```
 使用此SD卡镜像制作SD启动卡, 运行系统并进行量产所需的设置后, 将SD卡插入到Linux电脑并挂载, 使用cp或rsync命令拷贝最后一个分区的文件和目录, 即可得到完整的可用于量产的rootfs根文件系统, 最后[参考此处的内容](#从根文件系统制作一个可启动的SD卡)制作成可量产的SD卡镜像或eMMC镜像。
 
 
 ### 重新打包 SD-to-eMMC 卡刷固件
-*注: 这里以debian-bullseye-desktop-arm64系统为例进行说明*  
-下载本仓库到本地, 然后下载并解压[分区镜像文件压缩包](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher), 这里需要下载debian-bullseye-desktop-arm64和eflasher系统的文件:
+*注: 这里以debian-bullseye系统为例进行说明*  
+克隆本仓库到本地, 然后下载并解压[分区镜像文件压缩包](https://downloads.friendlyelec.com/os-images/rk3576/images), 这里需要下载debian-bullseye和eflasher系统的文件:
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/debian-bullseye-desktop-arm64-arm64-images.tgz
-tar xvzf debian-bullseye-desktop-arm64-arm64-images.tgz
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/emmc-flasher-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3576/images/debian-bullseye-desktop-arm64-images.tgz
+tar xvzf debian-bullseye-desktop-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3576/images/emmc-flasher-images.tgz
 tar xvzf emmc-flasher-images.tgz
 ```
 再使用以下命令, 打包卡刷固件, autostart=yes参数表示使用此固件开机时,会自动进入烧写流程:
 ```
-./mk-emmc-image.sh debian-bullseye-desktop-arm64-arm64 autostart=yes
+./mk-emmc-image.sh debian-bullseye-desktop-arm64 autostart=yes
 ```
 命令执行成功后, 将生成以下文件, 此文件可烧写到SD卡运行:  
 ```
-out/rk3576-eflasher-debian-bullseye-desktop-arm64-6.1-arm64-YYYYMMDD.img
+out/rk3576-eflasher-debian-bullseye-desktop-6.1-arm64-YYYYMMDD.img
 ```
 ### 备份文件系统并创建SD映像(将系统及应用复制到另一块开发板)
 #### 备份根文件系统
@@ -134,40 +134,42 @@ tar --warning=no-file-changed -cvpzf /rootfs.tar.gz \
     --exclude=/usr/local/first_boot_flag --one-file-system /
 ```
 #### 从根文件系统制作一个可启动的SD卡
-*注: 这里以debian-bullseye-desktop-arm64系统为例进行说明*  
-下载本仓库到本地, 然后下载并解压[分区镜像压缩包](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher):
+*注: 这里以debian-bullseye系统为例进行说明*  
+克隆本仓库到本地, 然后下载并解压[分区镜像压缩包](https://downloads.friendlyelec.com/os-images/rk3576/images):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/debian-bullseye-desktop-arm64-arm64-images.tgz
-tar xvzf debian-bullseye-desktop-arm64-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3576/images/debian-bullseye-desktop-arm64-images.tgz
+tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
 解压上一章节中从开发板上导出的rootfs.tar.gz, 需要使用root权限, 因此解压命令需要加上sudo:
 ```
-mkdir debian-bullseye-desktop-arm64-arm64/rootfs
-./tools/extract-rootfs-tar.sh rootfs.tar.gz debian-bullseye-desktop-arm64-arm64/rootfs
+mkdir debian-bullseye-desktop-arm64/rootfs
+./tools/extract-rootfs-tar.sh rootfs.tar.gz debian-bullseye-desktop-arm64/rootfs
 ```
 或者从以下网址下载文件系统压缩包并解压:
 ```
-wget http://112.124.9.243/dvdfiles/rk3576/rootfs/rootfs-debian-bullseye-desktop-arm64-arm64.tgz
-./tools/extract-rootfs-tar.sh rootfs-debian-bullseye-desktop-arm64-arm64.tgz
+wget https://downloads.friendlyelec.com/rootfs/rk3576/rootfs-debian-bullseye-desktop-arm64.tgz
+wget https://downloads.friendlyelec.com/rootfs/rk3576/rootfs-debian-bullseye-desktop-arm64.tgz.sha256
+sha256sum -c rootfs-debian-bullseye-desktop-arm64.tgz.sha256
+./tools/extract-rootfs-tar.sh rootfs-debian-bullseye-desktop-arm64.tgz
 ```
 用以下命令将文件系统目录打包成 rootfs.img:
 ```
-sudo ./build-rootfs-img.sh debian-bullseye-desktop-arm64-arm64/rootfs debian-bullseye-desktop-arm64-arm64
+sudo ./build-rootfs-img.sh debian-bullseye-desktop-arm64/rootfs debian-bullseye-desktop-arm64
 ```
 最后打包成SD卡镜像文件:
 ```
-./mk-sd-image.sh debian-bullseye-desktop-arm64-arm64
+./mk-sd-image.sh debian-bullseye-desktop-arm64
 ```
 或生成SD-to-eMMC卡刷固件:
 ```
-./mk-emmc-image.sh debian-bullseye-desktop-arm64-arm64 autostart=yes
+./mk-emmc-image.sh debian-bullseye-desktop-arm64 autostart=yes
 ```
 如果文件过大导致无法打包，可以使用RAW_SIZE_MB环境变量重新指定固件大小，比如指定为16g:
 ```
-RAW_SIZE_MB=16000 ./mk-sd-image.sh debian-bullseye-desktop-arm64-arm64
-RAW_SIZE_MB=16000 ./mk-emmc-image.sh debian-bullseye-desktop-arm64-arm64
+RAW_SIZE_MB=16000 ./mk-sd-image.sh debian-bullseye-desktop-arm64
+RAW_SIZE_MB=16000 ./mk-emmc-image.sh debian-bullseye-desktop-arm64
 ```
 
 #### 使用BTRFS文件系统
@@ -181,23 +183,25 @@ cat /proc/filesystems | grep btrfs
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/debian-bullseye-desktop-arm64-arm64-images.tgz
-tar xvzf debian-bullseye-desktop-arm64-arm64-images.tgz
-wget http://112.124.9.243/dvdfiles/rk3576/rootfs/rootfs-debian-bullseye-desktop-arm64-arm64.tgz
-./tools/extract-rootfs-tar.sh rootfs-debian-bullseye-desktop-arm64-arm64.tgz
-sudo -E FS_TYPE=btrfs ./build-rootfs-img.sh debian-bullseye-desktop-arm64-arm64/rootfs \
-    debian-bullseye-desktop-arm64-arm64
-./mk-sd-image.sh debian-bullseye-desktop-arm64-arm64
+wget https://downloads.friendlyelec.com/os-images/rk3576/images/debian-bullseye-desktop-arm64-images.tgz
+tar xvzf debian-bullseye-desktop-arm64-images.tgz
+wget https://downloads.friendlyelec.com/rootfs/rk3576/rootfs-debian-bullseye-desktop-arm64.tgz
+wget https://downloads.friendlyelec.com/rootfs/rk3576/rootfs-debian-bullseye-desktop-arm64.tgz.sha256
+sha256sum -c rootfs-debian-bullseye-desktop-arm64.tgz.sha256
+./tools/extract-rootfs-tar.sh rootfs-debian-bullseye-desktop-arm64.tgz
+sudo -E FS_TYPE=btrfs ./build-rootfs-img.sh debian-bullseye-desktop-arm64/rootfs \
+    debian-bullseye-desktop-arm64
+./mk-sd-image.sh debian-bullseye-desktop-arm64
 ```
 
 ### 编译内核
-*注: 这里以debian-bullseye-desktop-arm64系统为例进行说明*  
-下载本仓库到本地, 然后下载并解压[分区镜像压缩包](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher):
+*注: 这里以debian-bullseye系统为例进行说明*  
+克隆本仓库到本地, 然后下载并解压[分区镜像压缩包](https://downloads.friendlyelec.com/os-images/rk3576/images):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/debian-bullseye-desktop-arm64-arm64-images.tgz
-tar xvzf debian-bullseye-desktop-arm64-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3576/images/debian-bullseye-desktop-arm64-images.tgz
+tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
 从github克隆内核源代码到本地:
 ```
@@ -222,13 +226,13 @@ cd -
 ```
 编译内核，使用环境变量KERNEL_SRC和KCFG分别指定源代码目录与内核的defconfig配置:
 ```
-KERNEL_SRC=kernel KCFG=my_defconfig ./build-kernel.sh debian-bullseye-desktop-arm64-arm64
+KERNEL_SRC=kernel KCFG=my_defconfig ./build-kernel.sh debian-bullseye-desktop-arm64
 ```
 
 #### 仅编译内核头文件
 设置环境变量MK_HEADERS_DEB为1, 将编译内核头文件:
 ```
-MK_HEADERS_DEB=1 ./build-kernel.sh debian-bullseye-desktop-arm64-arm64
+MK_HEADERS_DEB=1 ./build-kernel.sh debian-bullseye-desktop-arm64
 ```
 #### 环境变量
 * KERNEL_SRC用于指定本地的内核源代码目录
@@ -237,18 +241,25 @@ MK_HEADERS_DEB=1 ./build-kernel.sh debian-bullseye-desktop-arm64-arm64
 * 设置SKIP_DISTCLEAN为1编译前不执行distclean
 
 ### 编译 u-boot
-*注: 这里以debian-bullseye-desktop-arm64系统为例进行说明* 
-下载本仓库到本地, 然后下载并解压[分区镜像压缩包](http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher):
+*注: 这里以debian-bullseye系统为例进行说明* 
+克隆本仓库到本地, 然后下载并解压[分区镜像压缩包](https://downloads.friendlyelec.com/os-images/rk3576/images):
 ```
 git clone https://github.com/friendlyarm/sd-fuse_rk3576 -b kernel-6.1.y --single-branch sd-fuse_rk3576-kernel6.1
 cd sd-fuse_rk3576-kernel6.1
-wget http://112.124.9.243/dvdfiles/rk3576/images-for-eflasher/debian-bullseye-desktop-arm64-arm64-images.tgz
-tar xvzf debian-bullseye-desktop-arm64-arm64-images.tgz
+wget https://downloads.friendlyelec.com/os-images/rk3576/images/debian-bullseye-desktop-arm64-images.tgz
+tar xvzf debian-bullseye-desktop-arm64-images.tgz
 ```
 从github克隆与OS版本相匹配的u-boot源代码到本地, 环境变量UBOOT_SRC用于指定本地源代码目录:
 ```
 git clone https://github.com/friendlyarm/uboot-rockchip -b nanopi6-v2017.09 --depth 1 uboot
-UBOOT_SRC=uboot ./build-uboot.sh debian-bullseye-desktop-arm64-arm64
+UBOOT_SRC=uboot ./build-uboot.sh debian-bullseye-desktop-arm64
+```
+
+## 非交互模式 (SDFUSE_NONINTERACTIVE)
+设置 `SDFUSE_NONINTERACTIVE=y` 可以跳过安装软件和下载缺失镜像文件前的询问, 示例:
+```
+export SDFUSE_NONINTERACTIVE=y
+./mk-sd-image.sh debian-bullseye-desktop-arm64
 ```
 
 ## Tips: 如何查询SD卡的设备文件名

@@ -19,11 +19,11 @@ sudo rm -rf tmp/*
 cd tmp
 git clone ../../.git sd-fuse_rk3576
 cd sd-fuse_rk3576
-if [ -f ../../debian-bullseye-desktop-arm64-images.tgz ]; then
-	tar xvzf ../../debian-bullseye-desktop-arm64-images.tgz
+if [ -f ../../ubuntu-noble-desktop-arm64-images.tgz ]; then
+	tar xvzf ../../ubuntu-noble-desktop-arm64-images.tgz
 else
-	wget ${CDN_URL}/debian-bullseye-desktop-arm64-images.tgz
-    tar xvzf debian-bullseye-desktop-arm64-images.tgz
+	wget ${CDN_URL}/ubuntu-noble-desktop-arm64-images.tgz
+    tar xvzf ubuntu-noble-desktop-arm64-images.tgz
 fi
 
 if [ -f ../../kernel-rk3576.tgz ]; then
@@ -32,11 +32,5 @@ else
 	git clone ${KERNEL_URL} --depth 1 -b ${KERNEL_BRANCH} kernel-rk3576
 fi
 
-wget http://${HTTP_SERVER}/sd-fuse/kernel-3rd-drivers.tgz
-if [ -f kernel-3rd-drivers.tgz ]; then
-    pushd out
-    tar xzf ../kernel-3rd-drivers.tgz
-    popd
-fi
-
-MK_HEADERS_DEB=1 KERNEL_SRC=$PWD/kernel-rk3576 ./build-kernel.sh debian-bullseye-desktop-arm64
+BUILD_THIRD_PARTY_DRIVER=0 KERNEL_SRC=$PWD/kernel-rk3576 ./build-kernel.sh ubuntu-noble-desktop-arm64
+sudo ./mk-sd-image.sh ubuntu-noble-desktop-arm64
